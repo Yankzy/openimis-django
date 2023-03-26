@@ -12,6 +12,7 @@ from graphene_django.settings import graphene_settings
 from graphene_django.views import GraphQLView as BaseGraphQLView, HttpError
 import logging
 
+
 logger = logging.getLogger(__name__)
 
 

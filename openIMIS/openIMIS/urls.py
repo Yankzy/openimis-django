@@ -19,6 +19,7 @@ from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 from .views import OpenIMISGraphQLView
 from graphql_jwt.decorators import jwt_cookie
+from insuree.views import ecrvs_webhook
 
 
 from .openimisurls import openimis_urls
@@ -31,4 +32,5 @@ urlpatterns = [
         csrf_exempt(jwt_cookie(OpenIMISGraphQLView.as_view(graphiql=DEBUG))),
     ),
     url(r"^ht/", include("health_check.urls")),
+    path("ecrvs-notification/", csrf_exempt(ecrvs_webhook)), 
 ] + openimis_urls()

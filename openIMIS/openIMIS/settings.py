@@ -9,13 +9,31 @@ from dotenv import load_dotenv
 from .openimisapps import openimis_apps, get_locale_folders
 from datetime import timedelta
 
-load_dotenv()
+
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Makes openimis_apps available to other modules
 OPENIMIS_APPS = openimis_apps()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Load the environment
+# load_dotenv(BASE_DIR / '.env')
+load_dotenv(override=True)
+# env = os.environ.copy()
+
+HERA_CLIENT_SECRET = os.environ.get("HERA_CLIENT_SECRET", None)
+HERA_TOKEN_URL = os.environ.get("HERA_TOKEN_URL", None)
+HERA_SUBSCRIBE_URL = os.environ.get("HERA_SUBSCRIBE_URL", None)
+HERA_GENERAL_URL = os.environ.get("HERA_GENERAL_URL", None)
+HERE_QUERY_STR = {
+    "attributeNames": [
+        "firstName", "lastName", "dob", "placeOfBirth", "certificateNumber", "height", 
+        "weight", "residentialAlley", "isLocal", "occupation", "residentialHouseNumber", 
+        "fatherName", "residentialVillage", "motherName", "residentialDistrict", "residentialProvince"
+    ]
+}
 
 LOGGING_LEVEL = os.getenv("DJANGO_LOG_LEVEL", "WARNING")
 DEFAULT_LOGGING_HANDLER = os.getenv("DJANGO_LOG_HANDLER", "debug-log")
@@ -151,7 +169,7 @@ INSTALLED_APPS = [
     "test_without_migrations",
     "rest_framework",
     "rules",
-    "rest_framework_rules",
+    # "rest_framework_rules",
     "health_check",  # required
     "health_check.db",  # stock Django health checkers
     "health_check.cache",
@@ -280,7 +298,6 @@ GRAPHQL_JWT = {
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-
 DB_ENGINE = os.environ.get("DB_ENGINE", "mssql")  # sql_server.pyodbc is deprecated for Django 3.1+
 
 if "sql_server.pyodbc" in DB_ENGINE or "mssql" in DB_ENGINE:
@@ -320,7 +337,7 @@ if not os.environ.get("NO_DATABASE_ENGINE", "False") == "True":
     }
 
 # Celery message broker configuration for RabbitMQ. One can also use Redis on AWS SQS
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://127.0.0.1")
+# CELERY_BROKER_URL = os.environ.get("CELERY_BROKER_URL", "amqp://127.0.0.1")
 
 # This scheduler config will:
 # - Store jobs in the project database
@@ -471,3 +488,4 @@ FRONTEND_URL = os.environ.get("FRONTEND_URL", "")
 
 USE_X_FORWARDED_HOST = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
