@@ -27,11 +27,24 @@ HERA_CLIENT_SECRET = os.environ.get("HERA_CLIENT_SECRET", None)
 HERA_TOKEN_URL = os.environ.get("HERA_TOKEN_URL", None)
 HERA_SUBSCRIBE_URL = os.environ.get("HERA_SUBSCRIBE_URL", None)
 HERA_GENERAL_URL = os.environ.get("HERA_GENERAL_URL", None)
-HERE_QUERY_STR = {
+HERA_QUERY_STR = {
     "attributeNames": [
-        "firstName", "lastName", "dob", "placeOfBirth", "certificateNumber", "height", 
-        "weight", "residentialAlley", "isLocal", "occupation", "residentialHouseNumber", 
-        "fatherName", "residentialVillage", "motherName", "residentialDistrict", "residentialProvince"
+        "firstName",
+        "lastName",
+        "dob",
+        "placeOfBirth",
+        "certificateNumber",
+        "height",
+        "weight",
+        "residentialAlley",
+        "isLocal",
+        "occupation",
+        "residentialHouseNumber",
+        "fatherName",
+        "residentialVillage",
+        "motherName",
+        "residentialDistrict",
+        "residentialProvince",
     ]
 }
 
@@ -177,10 +190,13 @@ INSTALLED_APPS = [
     "django_apscheduler",
     "channels",  # Websocket support
     "developer_tools",
-    "drf_spectacular"  # Swagger UI for FHIR API
+    "drf_spectacular",  # Swagger UI for FHIR API
 ]
 INSTALLED_APPS += OPENIMIS_APPS
-INSTALLED_APPS += ["apscheduler_runner", "signal_binding"]  # Signal binding should be last installed module
+INSTALLED_APPS += [
+    "apscheduler_runner",
+    "signal_binding",
+]  # Signal binding should be last installed module
 
 AUTHENTICATION_BACKENDS = []
 
@@ -202,16 +218,16 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
     ],
     "EXCEPTION_HANDLER": "openIMIS.rest_exception_handler.fhir_rest_api_exception_handler",
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'FHIR R4',
-    'DESCRIPTION': 'openIMIS FHIR R4 API',
-    'VERSION': '1.0.0',
-    'AUTHENTICATION_WHITELIST': [
-        'core.jwt_authentication.JWTAuthentication',
-        'api_fhir_r4.views.CsrfExemptSessionAuthentication'
+    "TITLE": "FHIR R4",
+    "DESCRIPTION": "openIMIS FHIR R4 API",
+    "VERSION": "1.0.0",
+    "AUTHENTICATION_WHITELIST": [
+        "core.jwt_authentication.JWTAuthentication",
+        "api_fhir_r4.views.CsrfExemptSessionAuthentication",
     ],
 }
 
@@ -233,9 +249,7 @@ MIDDLEWARE = [
 
 if DEBUG:
     # Attach profiler middleware
-    MIDDLEWARE.append(
-        "django_cprofile_middleware.middleware.ProfilerMiddleware"
-    )
+    MIDDLEWARE.append("django_cprofile_middleware.middleware.ProfilerMiddleware")
     DJANGO_CPROFILE_MIDDLEWARE_REQUIRE_STAFF = False
 
 if os.environ.get("REMOTE_USER_AUTHENTICATION", "false").lower() == "true":
@@ -298,7 +312,9 @@ GRAPHQL_JWT = {
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
-DB_ENGINE = os.environ.get("DB_ENGINE", "mssql")  # sql_server.pyodbc is deprecated for Django 3.1+
+DB_ENGINE = os.environ.get(
+    "DB_ENGINE", "mssql"
+)  # sql_server.pyodbc is deprecated for Django 3.1+
 
 if "sql_server.pyodbc" in DB_ENGINE or "mssql" in DB_ENGINE:
     MSSQL = True
@@ -462,7 +478,9 @@ EMAIL_USE_TLS = os.environ.get("EMAIL_USE_TLS", False)
 EMAIL_USE_SSL = os.environ.get("EMAIL_USE_SSL", False)
 
 # By default, the maximum upload size is 2.5Mb, which is a bit short for base64 picture upload
-DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get('DATA_UPLOAD_MAX_MEMORY_SIZE', 10*1024*1024))
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(
+    os.environ.get("DATA_UPLOAD_MAX_MEMORY_SIZE", 10 * 1024 * 1024)
+)
 
 
 # Insuree number validation. One can use the validator function for specific processing or just specify the length
@@ -487,5 +505,4 @@ MASTER_DATA_PASSWORD = os.environ.get("MASTER_DATA_PASSWORD", None)
 FRONTEND_URL = os.environ.get("FRONTEND_URL", "")
 
 USE_X_FORWARDED_HOST = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
